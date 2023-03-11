@@ -8,6 +8,19 @@
 
 #include "Heap.hpp"
 
+// Helper functions
+
+template<class T>
+void swap(T a, T b) {
+    T temp = a;
+    a = b;
+    b = temp;
+}
+
+int PARENT(const int i) {
+    return (i - 1) / 2;
+}
+
 // add an element to the tree
 // @TODO implement position
 void Heap::enqueue(HNode* newElement) {
@@ -46,9 +59,17 @@ HNode* Heap::dequeue() {
 }
 
 // fix the heap from a specific index up
-void Heap::fix_up(const int& index) {
+void Heap::fix_up(const int& i) {
 
-    // @TODO Implement fix_up
+    // check if the node at index `i` and its parent violate the heap property
+    if (i && tree[PARENT(i)] > tree[i])
+    {
+        // swap the two if heap property is violated
+        swap(tree[i], tree[PARENT(i)]);
+
+        // call fix_up-up on the parent
+        fix_up(PARENT(i));
+    }
 }
 
 // fix the tree after replacing the smallest element
