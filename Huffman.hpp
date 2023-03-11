@@ -43,7 +43,7 @@ private:
   // implement these functions
   // their descriptions are below
   void create_freq(const std::string&);
-  
+
   void create_codes(HNode*, const std::string&);
   void serialize_tree(HNode*, std::string&);
   void encode_string(const std::string&, std::string&);

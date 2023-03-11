@@ -34,6 +34,9 @@ public:
   void fix_down(const int&);
 
   void clear();
+
+  // REMOVE THIS IN THE END
+  void displayHeap();
 };
 
 #endif

@@ -62,12 +62,7 @@ void Heap::enqueue(HNode* newElement) {
     // Add a new leaf, its value is not important
     HNode* newNode;
     newNode = new HNode('\0', 0);
-
-    // If the tree has just been constructed
-    if(tree.size() == 2 && tree[0] == 0 && tree[1] == 0)
-        tree[ROOT()] = newNode;
-    else
-        tree.push_back(newNode);
+    tree.push_back(newNode);
 
     int index = LAST_INDEX(tree);
 
@@ -79,12 +74,9 @@ void Heap::enqueue(HNode* newElement) {
 
     // Store the new element into the vacant slot
     tree[index] = newElement;
-    // Update the index of the last element added
-    position = index;
 
-    count = -1;
-    for (auto ele:tree)
-        count++;
+    count = tree.size() - 1;
+
 }
 
 // remove the smallest element
@@ -108,12 +100,10 @@ HNode* Heap::dequeue() {
         // The new root is the last element
         tree[ROOT()] = lastElement;
         // Re-heap downward
-        fix_down(position); // @TODO figure out what should be passed here
+        fix_down(0); // @TODO figure out what should be passed here
     }
 
-    count = -1;
-    for (auto ele:tree)
-        count++;
+    count = tree.size() - 1;
 
     return min;
 }
@@ -183,7 +173,12 @@ void Heap::fix_down(const int&) {
 void Heap::clear() {
 
     // While the heap has items, keep dequeueing
-    while (count > 0) {
+    while (tree.size() > 1) {
         dequeue();
     }
+}
+
+void Heap::displayHeap() {
+    for (HNode* ele:tree)
+        std::cout << ele->value << "\n";
 }
