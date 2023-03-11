@@ -14,18 +14,19 @@
 // using std::make_pair (see create_freq)
 void Huffman::create_codes(HNode* node, const std::string& code) {
 
-    std::cout << "Heap contents:\n";
-    heap.displayHeap();
-
-    // If it is a leaf node
-    if (node->value != '*') {
-        std::cout << "Code: " << code << "\n";
+    if (node->left == nullptr && node->right == nullptr) {
+        // found a leaf node, add its code to the codes map
         codes.insert(std::make_pair(node->value, code));
+        return;
     }
 
-    // Otherwise it is an internal node if it is an internal node
-    return create_codes(node->left, code + '0');
-    return create_codes(node->right, code + '1');
+    // recursively traverse left and right subtrees, updating the code accordingly
+    if (node->left != nullptr) {
+        create_codes(node->left, code + "0");
+    }
+    if (node->right != nullptr) {
+        create_codes(node->right, code + "1");
+    }
 }
 
 // implement this function
@@ -37,17 +38,18 @@ void Huffman::create_codes(HNode* node, const std::string& code) {
 // there is no return value as s is being edited with each resursive call
 void Huffman::serialize_tree(HNode* node, std::string& s) {
 
-    // Check if it is an internal node
-    if(node->value == '*') {
-        s += "*";
-        return serialize_tree(node->left, s);
-        return serialize_tree(node->right, s);
+    if (node == nullptr) {
+        // add separator
+        s += "/";
+        return;
     }
 
-    // Otherwise it is a leaf node
+    // add current node's value to the serialized string
     s += node->value;
-    s += "//"; // Null pointers
 
+    // recursively traverse left and right subtrees
+    serialize_tree(node->left, s);
+    serialize_tree(node->right, s);
 }
 
 // implement this function
@@ -59,75 +61,59 @@ void Huffman::serialize_tree(HNode* node, std::string& s) {
 void Huffman::encode_string(const std::string& input, std::string& encoded_string) {
 
     for (char ch:input) {
-        std::cout << ch;
         encoded_string += codes.at(ch);
     }
 }
 
 Encoded Huffman::encode(const std::string& s) {
 
-    std::cout << "Clearing Heap...";
     // your heap implementation MUST have a clear function that
     // removes all HNodes from it
     heap.clear();
-    std::cout << "\t\t✅\n";
 
     // clear out the maps
-    std::cout << "Clearing Maps...";
     freq.clear();
     codes.clear();
-    std::cout << "\t\t✅\n";
 
     // the return value holding the encoded string and serialized tree
-    std::cout << "Declaring Encoded Struct...";
     Encoded ret;
-    std::cout << "\t✅\n";
 
     // create the frequency map
-    std::cout << "Creating Frequency Map...";
     create_freq(s);
-    std::cout << "\t✅\n";
 
     // create huffman nodes and add them to your heap
     // your heap must have an enqueue function that takes an HNode*
-    std::cout << "Creating Leaf Nodes...";
     for(auto iter = freq.begin(); iter != freq.end(); ++iter) {
         heap.enqueue(new HNode(iter->first, iter->second));
     }
-    std::cout << "\t\t✅\n";
 
     // while there are at least two items in the heap
     // create a new node that combines the first and second node into a new node
     // the char should be '*' and the value should be the values of the children added together
     // I recommend making a constructor tat takes two node pointers to do this easily
-    std::cout << "Compressing Tree...";
     while (heap.count > 1) {
         heap.enqueue(new HNode(heap.dequeue(), heap.dequeue()));
     }
-    std::cout << "\t\t✅\n";
 
-    std::cout << "Dequeue Root...";
     // store the pointer to the huffman tree
     HNode* huffman_tree = heap.dequeue();
-    std::cout << "\t\t\t✅\n";
 
     // create the codes for each leaf in the final tree
     // the default code is an empty string, as the function recurses the code is added to
-    std::cout << "Create Codes...";
     create_codes(huffman_tree, "");
-    std::cout << "\t\t\t✅\n";
+
+    std::cout << "Generated Codes:\n";
+    for (auto ele:codes)
+        std::cout << ele.first << "->" << ele.second << "\n";
+    std::cout << std::endl;
 
     // serialize the huffman tree
     // store it within ret
-    std::cout << "Serialize Tree...";
     serialize_tree(huffman_tree, ret.serialized_tree);
-    std::cout << "\t\t✅\n";
 
     // encode the original string using the codes map
     // store it within ret
-    std::cout << "Encoding String...";
     encode_string(s, ret.encoded_string);
-    std::cout << "\t\t✅\n";
 
     // delete the tree
     delete huffman_tree;

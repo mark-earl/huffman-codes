@@ -5,13 +5,10 @@
 #include "Huffman.hpp"
 
 int main() {
-    std::cout << "Initializing Huffman Object...";
-    Huffman h;
-    std::cout << "\t✅\n\n";
 
-    std::cout << "Initializing Encoded Object:\n";
+    Huffman h;
+
     Encoded e = h.encode("MISSISSIPPI");
-    std::cout << "\t✅\n";
 
     std::cout << "Input: MISSISSIPPI" << std::endl;
     std::cout << e.encoded_string << std::endl;

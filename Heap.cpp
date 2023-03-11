@@ -177,8 +177,3 @@ void Heap::clear() {
         dequeue();
     }
 }
-
-void Heap::displayHeap() {
-    for (HNode* ele:tree)
-        std::cout << ele->value << "\n";
-}
