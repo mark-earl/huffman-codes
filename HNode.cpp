@@ -4,17 +4,6 @@
 #include "HNode.hpp"
 #include <iostream>
 
-// helper functions
-int getTotalWeight(HNode* root) {
-    if (root->value != '*')
-        return root->weight;
-
-    int l = getTotalWeight(root->left);
-    int r = getTotalWeight(root->right);
-
-    return l + r;
-}
-
 // constructor for leaf nodes
 HNode::HNode(const char& character, const int& frequency) {
 
@@ -32,6 +21,7 @@ HNode::HNode(HNode* l, HNode* r) {
     // The weight is the combined count of the nodes in the subtrees.
     weight = l->weight + r->weight;
 
+    // Preserve tree linkages
     left = l;
     right = r;
 }

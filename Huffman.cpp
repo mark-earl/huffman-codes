@@ -104,7 +104,7 @@ Encoded Huffman::encode(const std::string& s) {
 
     std::cout << "Generated Codes:\n";
     for (auto ele:codes)
-        std::cout << ele.first << "->" << ele.second << "\n";
+        std::cout << "\t'" << ele.first << "'->" << ele.second << "\n";
     std::cout << std::endl;
 
     // serialize the huffman tree
