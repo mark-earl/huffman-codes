@@ -9,6 +9,7 @@
 #include "Heap.hpp"
 
 // add an element to the tree
+// @TODO implement position
 void Heap::enqueue(HNode* newElement) {
 
     // Add a new leaf
@@ -38,14 +39,14 @@ HNode* Heap::dequeue() {
 
     if(lastIndex > 1) {
         tree[1] = last;
-        fix_down();
+        fix_down(position); // @TODO figure out what should be passed here
     }
 
     return min;
 }
 
 // fix the heap from a specific index up
-void Heap::fix_up(const int&) {
+void Heap::fix_up(const int& index) {
 
     // @TODO Implement fix_up
 }
@@ -53,7 +54,47 @@ void Heap::fix_up(const int&) {
 // fix the tree after replacing the smallest element
 void Heap::fix_down(const int&) {
 
-    // @TODO Implement fix_down
+    HNode* root = tree[1];
+    int lastIndex = tree.size() - 1;
+
+    // Promote children of removed root while they are larger than last
+    int index = 1;
+    bool more = true;
+
+    while (more) {
+
+        int childIndex = 2 * index;
+
+        if (childIndex <= lastIndex) {
+
+            // Get smaller child, left child first
+            HNode* child = tree[2 * index];
+
+            // Use right child instead if it is smaller
+            if ((2 * index + 1 <= lastIndex) && (tree[2 * index + 1] < child)) {
+                childIndex = 2 * index + 1; child = tree[2 * index + 1];
+            }
+
+            // Check if larger child is smaller than root; if so promote child
+            if (child < root) {
+                tree[index] = child;
+                index = childIndex;
+            }
+
+            // Root is smaller than both children
+            else {
+                more = false;
+            }
+        }
+
+        // No children
+        else {
+            more = false;
+        }
+    }
+
+    // Store root element in vacant slot
+    tree[index] = root;
 }
 
 void Heap::clear() {
