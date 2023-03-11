@@ -12,7 +12,7 @@
 void Heap::enqueue(HNode* newElement) {
 
     // Add a new leaf
-    tree.push_back(0);
+    tree.push_back(nullptr);
     int index = tree.size() - 1;
 
     // Demote parents that are larger than the new element
@@ -28,7 +28,20 @@ void Heap::enqueue(HNode* newElement) {
 // remove the smallest element
 HNode* Heap::dequeue() {
 
-    // @TODO Implement dequeue
+    // The root of a min-heap is the smallest element
+    HNode* min = tree[1];
+
+    // Remove last element
+    int lastIndex = tree.size();
+    HNode* last = tree.back();
+    tree.pop_back();
+
+    if(lastIndex > 1) {
+        tree[1] = last;
+        fix_down();
+    }
+
+    return min;
 }
 
 // fix the heap from a specific index up
