@@ -19,7 +19,7 @@ protected:
 
 public:
   int count=0;
-  
+
   Heap() { tree.resize(2); }
   ~Heap() {}
 
@@ -27,7 +27,6 @@ public:
   void enqueue( HNode*);
   // fix the heap from a specific index up
   void fix_up(const int&);
-
   // remove the smallest element
   HNode* dequeue();
   // fix the tree after replacing the smallest element
