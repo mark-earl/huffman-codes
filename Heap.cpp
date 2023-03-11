@@ -8,6 +8,7 @@
 */
 
 #include "Heap.hpp"
+#include <iostream>
 
 // Helper functions
 
@@ -61,7 +62,13 @@ void Heap::enqueue(HNode* newElement) {
     // Add a new leaf, its value is not important
     HNode* newNode;
     newNode = new HNode('\0', 0);
-    tree.push_back(newNode);
+
+    // If the tree has just been constructed
+    if(tree.size() == 2 && tree[0] == 0 && tree[1] == 0)
+        tree[ROOT()] = newNode;
+    else
+        tree.push_back(newNode);
+
     int index = LAST_INDEX(tree);
 
     // Demote parents that are larger than the new element
@@ -74,8 +81,10 @@ void Heap::enqueue(HNode* newElement) {
     tree[index] = newElement;
     // Update the index of the last element added
     position = index;
-    // Increment the number of elements stored
-    ++count;
+
+    count = -1;
+    for (auto ele:tree)
+        count++;
 }
 
 // remove the smallest element
@@ -92,7 +101,6 @@ HNode* Heap::dequeue() {
 
     // Remove the last element
     tree.pop_back();
-    --count;
 
     // If the last element removed was not the root
     if(notRoot(lastIndex)) {
@@ -102,6 +110,10 @@ HNode* Heap::dequeue() {
         // Re-heap downward
         fix_down(position); // @TODO figure out what should be passed here
     }
+
+    count = -1;
+    for (auto ele:tree)
+        count++;
 
     return min;
 }

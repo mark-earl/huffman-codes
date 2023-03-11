@@ -2,21 +2,9 @@
 // c. 2015 A. Deeter
 
 #include "HNode.hpp"
+#include <iostream>
 
 // helper functions
-
-// @param root The root of the heap
-// @retval The total number of nodes in the tree/subtree from root
-int totalNodes(HNode* root)
-{
-    if (root == nullptr)
-        return 0;
-
-    int l = totalNodes(root->left);
-    int r = totalNodes(root->right);
-
-    return 1 + l + r;
-}
 
 // constructor for leaf nodes
 HNode::HNode(const char& character, const int& frequency) {
@@ -30,7 +18,8 @@ HNode::HNode(const char& character, const int& frequency) {
 // constructor for internal nodes
 HNode::HNode(HNode* l, HNode* r) {
 
-    // For internal nodes value is null (already set)
+    // For internal nodes value is null
+    value = '*';
     // The weight is the combined count of the nodes in the subtrees.
-    weight = totalNodes(this);
+    weight = l->weight + r->weight;
 }
