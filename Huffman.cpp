@@ -13,6 +13,14 @@
 // using std::make_pair (see create_freq)
 void Huffman::create_codes(HNode* node, const std::string& code) {
 
+    // Check if it is an internal node
+    if(node->value == '*') {
+        return create_codes(node->left, code + '0');
+        return create_codes(node->right, code + '1');
+    }
+
+    // Otherwise it is a leaf node
+    codes.insert(std::make_pair(node->value, code));
 }
 
 // implement this function
@@ -24,6 +32,17 @@ void Huffman::create_codes(HNode* node, const std::string& code) {
 // there is no return value as s is being edited with each resursive call
 void Huffman::serialize_tree(HNode* node, std::string& s) {
 
+    // Check if it is an internal node
+    if(node->value == '*') {
+        s += "*";
+        return serialize_tree(node->left, s);
+        return serialize_tree(node->right, s);
+    }
+
+    // Otherwise it is a leaf node
+    s += node->value;
+    s += "//";
+
 }
 
 // implement this function
@@ -34,70 +53,73 @@ void Huffman::serialize_tree(HNode* node, std::string& s) {
 // the code for the word 'bad' would be '01100'
 void Huffman::encode_string(const std::string& input, std::string& encoded_string) {
 
+    for (char ch:input) {
+        encoded_string += codes.at(ch);
+    }
 }
 
 Encoded Huffman::encode(const std::string& s) {
 
-  // your heap implementation MUST have a clear function that
-  // removes all HNodes from it
-  heap.clear();
+    // your heap implementation MUST have a clear function that
+    // removes all HNodes from it
+    heap.clear();
 
-  // clear out the maps
-  freq.clear();
-  codes.clear();
+    // clear out the maps
+    freq.clear();
+    codes.clear();
 
-  // the return value holding the encoded string and serialized tree
-  Encoded ret;
+    // the return value holding the encoded string and serialized tree
+    Encoded ret;
 
-  // create the frequency map
-  create_freq(s);
+    // create the frequency map
+    create_freq(s);
 
-  // create huffman nodes and add them to your heap
-  // your heap must have an enqueue function that takes an HNode*
-  for(auto iter = freq.begin(); iter != freq.end(); ++iter) {
-    heap.enqueue(new HNode(iter->first, iter->second));
-  }
+    // create huffman nodes and add them to your heap
+    // your heap must have an enqueue function that takes an HNode*
+    for(auto iter = freq.begin(); iter != freq.end(); ++iter) {
+        heap.enqueue(new HNode(iter->first, iter->second));
+    }
 
-  // while there are at least two items in the heap
-  // create a new node that combines the first and second node into a new node
-  // the char should be '*' and the value should be the values of the children added together
-  // I recommend making a constructor tat takes two node pointers to do this easily
-  while (heap.count > 1) {
-    heap.enqueue(new HNode(heap.dequeue(), heap.dequeue()));
-  }
+    // while there are at least two items in the heap
+    // create a new node that combines the first and second node into a new node
+    // the char should be '*' and the value should be the values of the children added together
+    // I recommend making a constructor tat takes two node pointers to do this easily
+    while (heap.count > 1) {
+        heap.enqueue(new HNode(heap.dequeue(), heap.dequeue()));
+    }
 
-  // store the pointer to the huffman tree
-  HNode* huffman_tree = heap.dequeue();
+    // store the pointer to the huffman tree
+    HNode* huffman_tree = heap.dequeue();
 
-  // create the codes for each leaf in the final tree
-  // the default code is an empty string, as the function recurses the code is added to
-  create_codes(huffman_tree, "");
+    // create the codes for each leaf in the final tree
+    // the default code is an empty string, as the function recurses the code is added to
+    create_codes(huffman_tree, "");
 
-  // serialize the huffman tree
-  // store it within ret
-  serialize_tree(huffman_tree, ret.serialized_tree);
+    // serialize the huffman tree
+    // store it within ret
+    serialize_tree(huffman_tree, ret.serialized_tree);
 
-  // encode the original string using the codes map
-  // store it within ret
-  encode_string(s, ret.encoded_string);
+    // encode the original string using the codes map
+    // store it within ret
+    encode_string(s, ret.encoded_string);
 
-  // delete the tree
-  delete huffman_tree;
+    // delete the tree
+    delete huffman_tree;
 
-  // return the final Encoded object
-  return ret;
+    // return the final Encoded object
+    return ret;
 }
 
 // this function will create a map of characters to values based on the number of times the character was in the given string
 // in order to store the frequencies of the letters in the string
 void Huffman::create_freq(const std::string& s) {
-  for (int i = 0; i < s.size(); ++i) {
-    // this will atempt to insert a character into the freq map
-    // if it is already in the map, the 'second' member will be false, and we know to increase the count
-    // iter is an iterator pointing to the found item in the map
-    if(freq.insert(std::make_pair(s[i], 1)).second == false) {
-      auto iter = freq.find(s[i]);
-      iter->second += 1;
+    for (int i = 0; i < s.size(); ++i) {
+        // this will atempt to insert a character into the freq map
+        // if it is already in the map, the 'second' member will be false, and we know to increase the count
+        // iter is an iterator pointing to the found item in the map
+        if(freq.insert(std::make_pair(s[i], 1)).second == false) {
+        auto iter = freq.find(s[i]);
+        iter->second += 1;
+        }
     }
-  }
 }
