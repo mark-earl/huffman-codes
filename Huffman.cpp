@@ -102,6 +102,7 @@ Encoded Huffman::encode(const std::string& s) {
     // the default code is an empty string, as the function recurses the code is added to
     create_codes(huffman_tree, "");
 
+    // output generated codes
     std::cout << "Generated Codes:\n";
     for (auto ele:codes)
         std::cout << "\t'" << ele.first << "'->" << ele.second << "\n";

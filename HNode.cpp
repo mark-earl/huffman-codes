@@ -2,7 +2,6 @@
 // c. 2015 A. Deeter
 
 #include "HNode.hpp"
-#include <iostream>
 
 // constructor for leaf nodes
 HNode::HNode(const char& character, const int& frequency) {

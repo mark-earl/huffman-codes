@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <cassert>
-#include <random>
-#include <algorithm>
 #include "Huffman.hpp"
 
 int main() {
