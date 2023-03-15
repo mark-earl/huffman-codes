@@ -56,3 +56,46 @@ No matter which version of the make file you run, both will produce the `huffman
 ## test_huffman.cpp
 
 The contents of test_huffman.cpp include a number of assertions and other relevant output. This is just to make grading the project easier.
+
+Here is the expected output:
+
+    Huffman Code Test (1/2)
+
+    Input: MISSISSIPPI
+
+    Generated Codes:
+            'I'->0
+            'M'->100
+            'P'->101
+            'S'->11
+
+    Encoded String  : 100011110111101011010
+    Serialized Tree : *I//**M//P//S//
+
+    Testing Encoded String...       PASSED
+    Testing Serialized Tree...      PASSED
+
+    Huffman Code Test (2/2)
+
+    Input: A man a plan, a canal, Panama!
+
+    Generated Codes:
+            ' '->00
+            '!'->01100
+            ','->0111
+            'A'->01010
+            'P'->01011
+            'a'->11
+            'c'->0100
+            'l'->1010
+            'm'->1011
+            'n'->100
+            'p'->01101
+
+    Encoded String  : 010100010111110000110001101101011100011100110001001110011101001110001011111001110111101100
+    Serialized Tree : ** //**c//*A//P//**!//p//,//**n//*l//m//a//
+
+    Testing Encoded String...       PASSED
+    Testing Serialized Tree...      PASSED
+
+    All Tests Passed
