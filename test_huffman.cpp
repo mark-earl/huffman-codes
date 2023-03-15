@@ -30,7 +30,6 @@ int main() {
     std::cout << "Encoded String  : " << a.encoded_string << std::endl;
     std::cout << "Serialized Tree : " << a.serialized_tree << "\n\n";
 
-    //@TODO implement theses tests
     std::cout << "Testing Encoded String...";
     assert(a.encoded_string == "010100010111110000110001101101011100011100110001001110011101001110001011111001110111101100");
     std::cout << "\tPASSED\n";
